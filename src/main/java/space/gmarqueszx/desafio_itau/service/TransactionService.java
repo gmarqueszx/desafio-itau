@@ -1,6 +1,7 @@
 package space.gmarqueszx.desafio_itau.service;
 
 import org.springframework.stereotype.Service;
+import space.gmarqueszx.desafio_itau.exception.InvalidTransactionException;
 import space.gmarqueszx.desafio_itau.model.TransactionRequest;
 
 import java.math.BigDecimal;
@@ -21,19 +22,22 @@ public class TransactionService {
     }
 
     public void validationTransaction(TransactionRequest transaction) {
+
         if (transaction.getValue() == null || transaction.getTimestamp() == null) {
-            System.out.println("The value and dateTime fields must be filled in.");
+            throw new InvalidTransactionException("The value and dateTime fields must be filled " +
+                    "in.");
         }
 
         if (transaction.getTimestamp().isAfter(OffsetDateTime.now())) {
-            System.out.println("The transaction cannot happen in the future.");
+            throw new InvalidTransactionException("The transaction cannot happen in the future.");
         }
 
         if (transaction.getValue().compareTo(BigDecimal.ZERO) < 0) {
-            System.out.println("The transaction cannot have a negative value.");
+            throw new InvalidTransactionException("The transaction cannot have a negative value.");
         }
 
         save(transaction);
+
     }
 
     public List<TransactionRequest> lastMinuteTransactions() {
