@@ -12,7 +12,7 @@ import java.util.List;
 public class TransactionService {
     private final List<TransactionRequest> transactions = new ArrayList<>();
 
-    public void save(TransactionRequest transaction) {
+    protected void save(TransactionRequest transaction) {
         transactions.add(transaction);
     }
 
@@ -21,11 +21,11 @@ public class TransactionService {
     }
 
     public void validationTransaction(TransactionRequest transaction) {
-        if (transaction.getValue() == null || transaction.getDateTime() == null) {
+        if (transaction.getValue() == null || transaction.getTimestamp() == null) {
             System.out.println("The value and dateTime fields must be filled in.");
         }
 
-        if (transaction.getDateTime().isAfter(OffsetDateTime.now())) {
+        if (transaction.getTimestamp().isAfter(OffsetDateTime.now())) {
             System.out.println("The transaction cannot happen in the future.");
         }
 
@@ -39,7 +39,7 @@ public class TransactionService {
     public List<TransactionRequest> lastMinuteTransactions() {
         OffsetDateTime limit = OffsetDateTime.now().minusMinutes(1);
         return transactions.stream()
-                .filter(t -> t.getDateTime().isAfter(limit))
+                .filter(t -> t.getTimestamp().isAfter(limit))
                 .toList();
     }
 }

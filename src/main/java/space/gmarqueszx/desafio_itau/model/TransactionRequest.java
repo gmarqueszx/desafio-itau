@@ -11,5 +11,5 @@ import java.time.OffsetDateTime;
 @Setter
 public class TransactionRequest {
     private BigDecimal value;
-    private OffsetDateTime dateTime;
+    private OffsetDateTime timestamp;
 }
