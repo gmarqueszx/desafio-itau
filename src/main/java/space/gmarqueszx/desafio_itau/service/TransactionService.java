@@ -42,9 +42,10 @@ public class TransactionService {
 
     public List<TransactionRequest> lastMinuteTransactions() {
         OffsetDateTime limit = OffsetDateTime.now().minusMinutes(1);
-        return transactions.stream()
+        List<TransactionRequest> result = transactions.stream()
                 .filter(t -> t.getTimestamp().isAfter(limit))
                 .toList();
+        return result;
     }
 }
 
